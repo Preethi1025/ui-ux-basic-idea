@@ -1,0 +1,346 @@
+SQL*Plus: Release 9.0.1.3.0 - Production on Sat Mar 9 15:28:52 2024
+
+(c) Copyright 2001 Oracle Corporation.  All rights reserved.
+
+
+Connected to:
+Oracle9i Enterprise Edition Release 9.2.0.1.0 - Production
+With the Partitioning, OLAP and Oracle Data Mining options
+JServer Release 9.2.0.1.0 - Production
+
+SQL> desc student1;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDID                                             VARCHAR2(10)
+ STUDNAME                                           VARCHAR2(15)
+ DEPTID                                             VARCHAR2(10)
+ DEPTNAME                                           VARCHAR2(10)
+
+SQL> Create table student2(studid varchar2(10),studname varchar2(15),deptid varchar2(10),deptname va
+rchar2(15));
+
+Table created.
+
+SQL> desc student2;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDID                                             VARCHAR2(10)
+ STUDNAME                                           VARCHAR2(15)
+ DEPTID                                             VARCHAR2(10)
+ DEPTNAME                                           VARCHAR2(15)
+
+SQL> Alter table student2 add(college varchar(19));
+
+Table altered.
+
+SQL> Create table employee(empid varchar2(10),empname varchar2(20),date_of_birth date,date_of_join d
+ate,age varchar2(3),designation varchar2(10),salary varchar2(10),location varchar(10));
+
+Table created.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPID                                              VARCHAR2(10)
+ EMPNAME                                            VARCHAR2(20)
+ DATE_OF_BIRTH                                      DATE
+ DATE_OF_JOIN                                       DATE
+ AGE                                                VARCHAR2(3)
+ DESIGNATION                                        VARCHAR2(10)
+ SALARY                                             VARCHAR2(10)
+ LOCATION                                           VARCHAR2(10)
+
+SQL> Alter table employee add(address varchar2(20),company varchar(10));
+
+Table altered.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPID                                              VARCHAR2(10)
+ EMPNAME                                            VARCHAR2(20)
+ DATE_OF_BIRTH                                      DATE
+ DATE_OF_JOIN                                       DATE
+ AGE                                                VARCHAR2(3)
+ DESIGNATION                                        VARCHAR2(10)
+ SALARY                                             VARCHAR2(10)
+ LOCATION                                           VARCHAR2(10)
+ ADDRESS                                            VARCHAR2(20)
+ COMPANY                                            VARCHAR2(10)
+
+SQL> alter table employee modify(address varchar2(20));
+
+Table altered.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPID                                              VARCHAR2(10)
+ EMPNAME                                            VARCHAR2(20)
+ DATE_OF_BIRTH                                      DATE
+ DATE_OF_JOIN                                       DATE
+ AGE                                                VARCHAR2(3)
+ DESIGNATION                                        VARCHAR2(10)
+ SALARY                                             VARCHAR2(10)
+ LOCATION                                           VARCHAR2(10)
+ ADDRESS                                            VARCHAR2(20)
+ COMPANY                                            VARCHAR2(10)
+
+SQL> Alter table employee drop column date_of_birth;
+
+Table altered.
+
+SQL> Alter table employee drop column date_of_join;
+
+Table altered.
+
+SQL> Alter table employee drop column age;
+
+Table altered.
+
+SQL> Alter table employee drop column designation;
+
+Table altered.
+
+SQL> Alter table employee drop column salary;
+
+Table altered.
+
+SQL> Alter table employee drop column location;
+
+Table altered.
+
+SQL> Alter table employee drop column address;
+
+Table altered.
+
+SQL> Alter table employee drop column company;
+
+Table altered.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPID                                              VARCHAR2(10)
+ EMPNAME                                            VARCHAR2(20)
+
+SQL> select * from employee;
+
+no rows selected
+
+SQL> truncate table employee;
+
+Table truncated.
+
+SQL> insert into employee values('&empid"&empname);
+Enter value for empid: 
+Enter value for empname: pradiksha
+old   1: insert into employee values('&empid"&empname)
+new   1: insert into employee values('"pradiksha)
+ERROR:
+ORA-01756: quoted string not properly terminated
+
+
+SQL> insert into employee values('&empid''&empname');
+Enter value for empid: 
+Enter value for empname: Pradiksha
+old   1: insert into employee values('&empid''&empname')
+new   1: insert into employee values('''Pradiksha')
+insert into employee values('''Pradiksha')
+            *
+ERROR at line 1:
+ORA-00947: not enough values
+
+
+SQL> insert into employee values('&empid','&empname');
+Enter value for empid: 
+Enter value for empname: Pradiksha
+old   1: insert into employee values('&empid','&empname')
+new   1: insert into employee values('','Pradiksha')
+
+1 row created.
+
+SQL> select * from employee;
+
+EMPID      EMPNAME
+---------- --------------------
+           Pradiksha
+
+SQL> drop table employee;
+
+Table dropped.
+
+SQL> create table employee(empname varchar2(30) not null,empid number(4)not null);
+
+Table created.
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNAME                                   NOT NULL VARCHAR2(30)
+ EMPID                                     NOT NULL NUMBER(4)
+
+SQL> insert into employee values('&empid','&empname');
+Enter value for empid: 
+Enter value for empname: Diksha
+old   1: insert into employee values('&empid','&empname')
+new   1: insert into employee values('','Diksha')
+insert into employee values('','Diksha')
+                               *
+ERROR at line 1:
+ORA-01722: invalid number
+
+
+SQL> insert into employee values('&empname','&empid');
+Enter value for empname: 
+Enter value for empid: 
+old   1: insert into employee values('&empname','&empid')
+new   1: insert into employee values('','')
+insert into employee values('','')
+*
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("251066"."EMPLOYEE"."EMPNAME")
+
+
+SQL> insert into employee values('&empname','&empid');
+Enter value for empname: praidi
+Enter value for empid: 23
+old   1: insert into employee values('&empname','&empid')
+new   1: insert into employee values('praidi','23')
+
+1 row created.
+
+SQL>  select * from employee;
+
+EMPNAME                             EMPID
+------------------------------ ----------
+praidi                                 23
+
+SQL> /
+
+EMPNAME                             EMPID
+------------------------------ ----------
+praidi                                 23
+
+SQL>  insert into employee values('&empname','&empid');
+Enter value for empname: pradi
+Enter value for empid: 23
+old   1:  insert into employee values('&empname','&empid')
+new   1:  insert into employee values('pradi','23')
+
+1 row created.
+
+SQL> /
+Enter value for empname: Risha
+Enter value for empid: 45
+old   1:  insert into employee values('&empname','&empid')
+new   1:  insert into employee values('Risha','45')
+
+1 row created.
+
+SQL> Preethi
+SP2-0042: unknown command "Preethi" - rest of line ignored.
+SQL> /
+Enter value for empname: Preethi
+Enter value for empid: 21
+old   1:  insert into employee values('&empname','&empid')
+new   1:  insert into employee values('Preethi','21')
+
+1 row created.
+
+SQL> /
+Enter value for empname: Oviya
+Enter value for empid: 36
+old   1:  insert into employee values('&empname','&empid')
+new   1:  insert into employee values('Oviya','36')
+
+1 row created.
+
+SQL> /
+Enter value for empname: yazhu
+Enter value for empid: 29
+old   1:  insert into employee values('&empname','&empid')
+new   1:  insert into employee values('yazhu','29')
+
+1 row created.
+
+SQL> 
+SQL>  select * from employee;
+
+EMPNAME                             EMPID
+------------------------------ ----------
+praidi                                 23
+pradi                                  23
+Risha                                  45
+Preethi                                21
+Oviya                                  36
+yazhu                                  29
+
+6 rows selected.
+
+SQL> 
+6 rows selected.
+
+SQL> alter table employee add constraint p3 primary key(empid);
+alter table employee add constraint p3 primary key(empid)
+                                    *
+ERROR at line 1:
+ORA-02437: cannot validate (251066.P3) - primary key violated
+
+
+SQL> Alter table employee add constraint p3 primary key(empid);
+Alter table employee add constraint p3 primary key(empid)
+                                    *
+ERROR at line 1:
+ORA-02437: cannot validate (251066.P3) - primary key violated
+
+
+SQL> alter table employee add constraint p4 primary key(empid);
+alter table employee add constraint p4 primary key(empid)
+                                    *
+ERROR at line 1:
+ORA-02437: cannot validate (251066.P4) - primary key violated
+
+
+SQL> drop table employee;
+
+Table dropped.
+
+SQL> truncate table employee;
+truncate table employee
+               *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+6 rows selected.
+
+SQL> alter table employee add constraint p3 primary key(empid);
+alter table employee add constraint p3 primary key(empid)
+                                    *
+ERROR at line 1:
+ORA-02437: cannot validate (251066.P3) - primary key violated
+
+
+SQL> Alter table employee add constraint p3 primary key(empid);
+Alter table employee add constraint p3 primary key(empid)
+                                    *
+ERROR at line 1:
+ORA-02437: cannot validate (251066.P3) - primary key violated
+
+
+SQL> alter table employee add constraint p4 primary key(empid);
+alter table employee add constraint p4 primary key(empid)
+                                    *
+ERROR at line 1:
+ORA-02437: cannot validate (251066.P4) - primary key violated
+
+
+SQL> drop table employee;
+
+Table dropped.
+
+SQL> truncate table employee;
+truncate table employee
+               *
+ERROR at line 1:
+ORA-00942: table or view does not exist
